@@ -63,14 +63,6 @@
     border-radius: 4px;
   }
   
-  .navbar-responsive {
-    display: none;
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-    margin-left: 20px;
-  }
-  
   /* Responsive menu for smaller screens */
   @media (max-width: 768px) {
     .navbar-links {

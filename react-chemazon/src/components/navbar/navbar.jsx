@@ -23,12 +23,9 @@ const Navbar = () => {
       <ul className={`navbar-links ${isResponsive ? 'active' : ''}`}>
         <li><a href="#">Products</a></li>
         <li><a href="#">Cart</a></li>
-        <li><a href="#">Register/Login</a></li>
+        <li><a href="/login">Login</a></li>
       </ul>
 
-      <div className="navbar-responsive" onClick={toggleResponsiveMenu}>
-        ☰
-      </div>
     </nav>
   )
 }

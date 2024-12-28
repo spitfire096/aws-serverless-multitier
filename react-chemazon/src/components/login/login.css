@@ -1,0 +1,160 @@
+/* General container for the login page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Card container */
+  .login-card {
+    background-color: white;
+    width: 350px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Title styling */
+  .login-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #232f3e;
+    margin-bottom: 5px;
+  }
+  
+  /* Subtitle below the title */
+  .login-subtitle {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Form styling */
+  .login-form label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Checkbox container */
+  .checkbox-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .checkbox-container label {
+    font-size: 12px;
+  }
+  
+  /* Button styles */
+  .login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    color: #111;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #ddb347;
+  }
+  
+  .forgot-password {
+    font-size: 12px;
+    color: #007185;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  /* Divider for separating sections */
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .divider span {
+    font-size: 12px;
+    color: #888;
+    padding: 0 10px;
+  }
+  
+  .divider::before,
+  .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #ddd;
+  }
+  
+  /* Google login button */
+  .google-login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #555;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .google-login-button:hover {
+    background-color: #f6f6f6;
+  }
+  
+  .google-login-button img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Signup section */
+  .signup-section {
+    margin-top: 20px;
+  }
+  
+  .signup-section p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .signup-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007185;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .signup-button:hover {
+    background-color: #005a63;
+  }
+  

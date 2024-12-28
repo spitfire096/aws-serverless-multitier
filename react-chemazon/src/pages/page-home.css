@@ -1,11 +1,5 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
   /* Layout to place sidebar and product listing side by side */
-  .app-layout {
+  .page-layout {
     display: flex;
     width: 100%;
   }
@@ -14,5 +8,6 @@
   body {
     font-family: Arial, sans-serif;
     background-color: #ECDD7B;
+    margin: 0;
   }
   
