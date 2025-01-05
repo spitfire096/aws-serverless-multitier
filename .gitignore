@@ -1,24 +1,46 @@
+# Node Modules
+node_modules/
+vite.config.local.js
+
+# Build Output
+dist/
+out/
+
 # Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Local Environment Files
+.env
+.env.*.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Editor and System Files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+
+# Amplify Files
+amplify/.config/local-env-info.json
+amplify/.config/local-aws-info.json
+amplify/.config/local-amplify-config.json
+amplify/backend/amplify-meta.json
+amplify/backend/awscloudformation/
+amplify/mock-data/
+amplify/mock-api/
+amplify/.temp/
+
+# AWS Amplify Generated Build Artifacts
+amplify/#current-cloud-backend/
+amplify/#amplify-ui-components/
+amplify/.amplify/
+
+# Git Hooks
+.husky/
+
+# Build Artifacts and Cache (Vite-specific)
+.vite/
+.vite-cache/
