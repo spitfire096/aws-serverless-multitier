@@ -1,16 +1,14 @@
-// App.jsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/page-home';
-import Login from './pages/page-login';
+import React from "react";
+import Navbar from "./components/navbar/navbar";
+
+import "./App.css";
 
 function App() {
+  // Pass signOut to Navbar
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <div> 
+        <Navbar />
+    </div>
   );
 }
 
