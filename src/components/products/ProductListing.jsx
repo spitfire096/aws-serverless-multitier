@@ -27,7 +27,6 @@ const ProductListing = () => {
       numColors: 2,
       claimedPercent: 40
     },
-    // Add as many items as you like
   ]
 
   return (

@@ -1,22 +1,28 @@
+// src/components/Navbar/Navbar.jsx
+
 import React, { useState } from "react";
 import "./navbar.css";
 import amazonLogo from "../../assets/amazon_logo.png";
 import { useAuth } from "react-oidc-context";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
-// Intercept the passed signOut method from app.jsx
 const Navbar = () => {
   const [isResponsive, setIsResponsive] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const auth = useAuth();
 
   const signOut = async () => {
     // Remove the user from local session
     await auth.removeUser();
-    
+
     // Then redirect to Cognito’s logout endpoint
     const clientId = "2rk0abf54j7on6od375mc7nbkd";
     const logoutUri = "https://main.d1ktvyh6vc45ny.amplifyapp.com/";
-    const cognitoDomain = "https://ap-southeast-2h6ot5bgmn.auth.ap-southeast-2.amazoncognito.com";
-    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+    const cognitoDomain =
+      "https://ap-southeast-2h6ot5bgmn.auth.ap-southeast-2.amazoncognito.com";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
+      logoutUri
+    )}`;
   };
 
   switch (auth.activeNavigator) {
@@ -38,10 +44,19 @@ const Navbar = () => {
     setIsResponsive(!isResponsive);
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleSignOut = () => {
+    setIsDropdownOpen(false);
+    signOut();
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <img src={amazonLogo} alt="Company Logo" />
+        <a href="/"><img src={amazonLogo} alt="Company Logo" /></a>
       </div>
 
       <div className="search-bar">
@@ -50,16 +65,46 @@ const Navbar = () => {
       </div>
 
       <ul className={`navbar-links ${isResponsive ? "active" : ""}`}>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Cart</a></li>
         <li>
+          <Link to="/products">Products</Link>
+        </li>
+        <li>
+          <Link to="/cart">Cart</Link>
+        </li>
+
+        {auth.isAuthenticated && (
+          <li>
+            <Link to="/sell" className="sell-button">
+              +
+            </Link>{" "}
+            {/* Sell button navigates to /sell */}
+          </li>
+        )}
+
+        <li className="user-menu">
           {auth.isAuthenticated ? (
-            <button onClick={signOut}>Sign out</button> // change sign in button to sign out
+            <div className="dropdown">
+              <button className="dropbtn" onClick={toggleDropdown}>
+                Hello, {auth.user?.profile?.name || "User"}!
+              </button>
+              {isDropdownOpen && (
+                <div className="dropdown-content">
+                  <Link to="/profile">Profile</Link>
+                  <Link to="/sold-items">Sold Items</Link>
+                  <button onClick={handleSignOut}>Sign Out</button>
+                </div>
+              )}
+            </div>
           ) : (
-            <button onClick={() => auth.signinRedirect()}>Sign in</button>
+            <button onClick={() => auth.signinRedirect()}>Sign In</button>
           )}
         </li>
       </ul>
+
+      {/* Responsive Menu Toggle (optional) */}
+      <button className="navbar-toggle" onClick={toggleResponsiveMenu}>
+        ☰
+      </button>
     </nav>
   );
 };

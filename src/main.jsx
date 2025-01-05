@@ -1,13 +1,17 @@
 // main.jsx
-import { AuthProvider} from "react-oidc-context";
+import { AuthProvider } from "react-oidc-context";
 import App from "./App";
 import ReactDOM from "react-dom/client";
 import React from "react";
 
+import { BrowserRouter, Routes, Route } from "react-router";
+import PageSoldItems from "./pages/page-sell-item";
+
+
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_H6ot5bgmn",
-  client_id: "2rk0abf54j7on6od375mc7nbkd",
-  redirect_uri: "https://main.d1ktvyh6vc45ny.amplifyapp.com/",
+  authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_WsSH8Q4rB",
+  client_id: "1jjcmvejg1ip99bi9vq36g1oll",
+  redirect_uri: "http://localhost:5173/",
   response_type: "code",
   scope: "email openid profile",
   onSigninCallback: (_user) => {
@@ -21,7 +25,12 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider {...cognitoAuthConfig}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/sell" element={<PageSoldItems />} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>
 );
