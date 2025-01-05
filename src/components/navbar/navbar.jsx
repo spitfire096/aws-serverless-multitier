@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <img src={amazonLogo} alt="Company Logo" />
+        <a href="/"><img src={amazonLogo} alt="Company Logo" /></a>
       </div>
 
       <div className="search-bar">
