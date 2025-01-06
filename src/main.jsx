@@ -2,10 +2,9 @@
 import { AuthProvider } from "react-oidc-context";
 import App from "./App";
 import ReactDOM from "react-dom/client";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { BrowserRouter, Routes, Route } from "react-router";
-import PageSoldItems from "./pages/page-sell-item";
+import { BrowserRouter } from 'react-router-dom';
 
 
 const cognitoAuthConfig = {
@@ -21,15 +20,11 @@ const cognitoAuthConfig = {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// wrap the application with AuthProvider
 root.render(
   <React.StrictMode>
     <AuthProvider {...cognitoAuthConfig}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/sell" element={<PageSoldItems />} />
-        </Routes>
+        <App />
       </BrowserRouter>
     </AuthProvider>
   </React.StrictMode>

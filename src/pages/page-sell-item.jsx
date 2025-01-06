@@ -4,7 +4,7 @@ import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router-dom"; // Assuming you're using react-router
 import Navbar from "../components/navbar/navbar";
 
-const PageSoldItems = () => {
+const SellItem = () => {
   const auth = useAuth();
   const navigate  = useNavigate();
 
@@ -218,4 +218,4 @@ const PageSoldItems = () => {
   );
 };
 
-export default PageSoldItems;
+export default SellItem;

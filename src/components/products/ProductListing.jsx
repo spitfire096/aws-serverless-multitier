@@ -1,33 +1,53 @@
-import React from 'react'
+// ProductListing.jsx
+import React, { useEffect, useState } from 'react'
 import './ProductListing.css'
 import ProductCard from './ProductCard'
+import { fetchProducts, buyProduct } from '../../services/apiService'
+import { useAuth } from 'react-oidc-context'
 
 const ProductListing = () => {
-  // Create some placeholder product data
-  const products = [
-    {
-      id: 1,
-      title: 'Lorem Ipsum Item 1',
-      img: 'https://via.placeholder.com/200x200',
-      discount: '46% off',
-      dealType: 'Limited time deal',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      rating: 4.5,
-      numColors: 3,
-      claimedPercent: 25
-    },
-    {
-      id: 2,
-      title: 'Lorem Ipsum Item 2',
-      img: 'https://via.placeholder.com/200x200',
-      discount: '51% off',
-      dealType: 'Limited time deal',
-      description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      rating: 4.0,
-      numColors: 2,
-      claimedPercent: 40
-    },
-  ]
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const auth = useAuth()
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await fetchProducts()
+        setProducts(data)
+      } catch (err) {
+        setError(err.message || 'Error fetching products')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    getProducts()
+  }, [])
+
+  const handleBuy = async (productId) => {
+    if (!auth.isAuthenticated) {
+      auth.signinRedirect()
+      return
+    }
+
+    try {
+      await buyProduct(productId)
+      // Update the product's status locally
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === productId ? { ...product, status: 'sold' } : product
+        )
+      )
+      alert('Purchase successful!')
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error purchasing product')
+    }
+  }
+
+  if (loading) return <div>Loading products...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="product-listing-container">
@@ -35,6 +55,7 @@ const ProductListing = () => {
         <ProductCard 
           key={product.id}
           product={product}
+          onBuy={handleBuy}
         />
       ))}
     </div>
