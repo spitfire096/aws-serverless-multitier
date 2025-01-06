@@ -54,58 +54,54 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <a href="/"><img src={amazonLogo} alt="Company Logo" /></a>
-      </div>
-
-      <div className="search-bar">
-        <input type="text" placeholder="Search for products..." />
-        <button>Search</button>
-      </div>
-
-      <ul className={`navbar-links ${isResponsive ? "active" : ""}`}>
-        <li>
-          <Link to="/products">Products</Link>
-        </li>
-        <li>
-          <Link to="/cart">Cart</Link>
-        </li>
-
-        {auth.isAuthenticated && (
+    <div>
+      <nav className="navbar">
+        <div className="navbar-logo">
+          <a href="/"><img src={amazonLogo} alt="Company Logo" /></a>
+        </div>
+        <div className="search-bar">
+          <input type="text" placeholder="Search for products..." />
+          <button>Search</button>
+        </div>
+        <ul className={`navbar-links ${isResponsive ? "active" : ""}`}>
           <li>
-            <Link to="/sell" className="sell-button">
-              +
-            </Link>{" "}
-            {/* Sell button navigates to /sell */}
+            <Link to="/products">Products</Link>
           </li>
-        )}
-
-        <li className="user-menu">
-          {auth.isAuthenticated ? (
-            <div className="dropdown">
-              <button className="dropbtn" onClick={toggleDropdown}>
-                Hello, {auth.user?.profile?.name || "User"}!
-              </button>
-              {isDropdownOpen && (
-                <div className="dropdown-content">
-                  <Link to="/profile">Profile</Link>
-                  <Link to="/sold-items">Sold Items</Link>
-                  <button onClick={handleSignOut}>Sign Out</button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <button onClick={() => auth.signinRedirect()}>Sign In</button>
+          <li>
+            <Link to="/cart">Cart</Link>
+          </li>
+          {auth.isAuthenticated && (
+            <li>
+              <Link to="/sell" className="sell-button">
+                +
+              </Link>{" "}
+            </li>
           )}
-        </li>
-      </ul>
-
-      {/* Responsive Menu Toggle (optional) */}
-      <button className="navbar-toggle" onClick={toggleResponsiveMenu}>
-        ☰
-      </button>
-    </nav>
+          <li className="user-menu">
+            {auth.isAuthenticated ? (
+              <div className="dropdown">
+                <button className="dropbtn" onClick={toggleDropdown}>
+                  Hello {auth.user?.profile?.name || "User"}!
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="dropdown-content">
+                    <Link to="/profile">Profile</Link>
+                    <Link to="/sold-items">Sold Items</Link>
+                    <button onClick={handleSignOut}>Sign Out</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button onClick={() => auth.signinRedirect()}>Sign In</button>
+            )}
+          </li>
+        </ul>
+        <button className="navbar-toggle" onClick={toggleResponsiveMenu}>
+          ☰
+        </button>
+      </nav>
+    </div>
   );
 };
 
