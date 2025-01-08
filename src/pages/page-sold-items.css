@@ -1,0 +1,47 @@
+/* page-sold-item.css */
+
+.sold-items-container {
+    padding: 20px;
+  }
+  
+  .sold-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .sold-item-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  
+  .sold-item-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .sold-item-info {
+    padding: 15px;
+  }
+  
+  .sold-item-info h3 {
+    margin-top: 0;
+  }
+  
+  .edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  .edit-button:hover {
+    background-color: #0056b3;
+  }
+  
