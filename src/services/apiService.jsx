@@ -1,41 +1,30 @@
 // src/services/apiService.js
-import { getAccessToken } from './authService' // We'll create this next
 
-import axios from 'axios'
+// Placeholder base URL – update these once your API Gateway is deployed
+const BASE_URL = "https://n0ahn6cxe9.execute-api.ap-southeast-2.amazonaws.com/prod";
 
-const API_BASE_URL = 'https://your-api-domain.com/api' // Replace with your actual API base URL
+export const syncUserInfo = async (userInfo) => {
+  const response = await fetch(`${BASE_URL}/syncUser`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userInfo),
+  });
+  if (!response.ok) throw new Error("Sync failed");
+  return response.json();
+};
 
-// GET /products
-export const fetchProducts = async () => {
-  const response = await axios.get(`${API_BASE_URL}/products`)
-  return response.data
-}
+export const fetchUserProfile = async (userSub) => {
+  const response = await fetch(`${BASE_URL}/profile?sub=${userSub}`);
+  if (!response.ok) throw new Error("Network response was not ok");
+  return response.json();
+};
 
-// POST /products/{productId}/buy
-export const buyProduct = async (productId) => {
-  const token = await getAccessToken()
-  const response = await axios.put(
-    `${API_BASE_URL}/products/${productId}/buy`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
-  return response.data
-}
-
-// GET /products?sellerId={userId}
-export const fetchUserProducts = async (sellerId) => {
-  const token = await getAccessToken()
-  const response = await axios.get(`${API_BASE_URL}/products`, {
-    params: { sellerId },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  return response.data
-}
-
-// Additional API methods can be added here
+export const updateUserProfile = async (userSub, profileData) => {
+  const response = await fetch(`${BASE_URL}/profile`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sub: userSub, ...profileData }),
+  });
+  if (!response.ok) throw new Error("Update failed");
+  return response.json();
+};
