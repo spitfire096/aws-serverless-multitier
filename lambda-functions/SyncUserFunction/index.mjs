@@ -1,23 +1,30 @@
-// Import require in an ES module environment
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const mysql = require('mysql');
+import mysql from 'mysql2/promise';
 
 export const handler = async (event) => {
+  // Define CORS headers to include in all responses
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
   let connection;
+
   try {
     console.log("Received event:", JSON.stringify(event));
 
-    // Safely parse request body
-    if (!event.body) {
-      throw new Error("Request body is undefined or empty.");
-    }
-
+    // Handle request body parsing
     let body;
-    try {
-      body = JSON.parse(event.body);
-    } catch (parseError) {
-      throw new Error("Failed to parse JSON body: " + parseError.message);
+    if (typeof event.body === 'string') {
+      try {
+        body = JSON.parse(event.body);
+      } catch (parseError) {
+        throw new Error("Failed to parse JSON body: " + parseError.message);
+      }
+    } else if (typeof event.body === 'object' && event.body !== null) {
+      body = event.body;
+    } else {
+      throw new Error("Request body is not valid JSON.");
     }
 
     const { sub, email, name } = body;
@@ -25,55 +32,25 @@ export const handler = async (event) => {
       throw new Error("Missing required user fields (sub, email, name).");
     }
 
-    // Create a MySQL connection
-    connection = mysql.createConnection({
+    // Create a MySQL connection using mysql2/promise
+    connection = await mysql.createConnection({
       host: process.env.DB_HOST,
+      port: process.env.DB_PORT || 3306,  // default MySQL port
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
+      connectTimeout: 5000  // 5-second timeout
     });
 
-    // Promisified connection methods
-    const connectAsync = () =>
-      new Promise((resolve, reject) => {
-        connection.connect((err) => {
-          if (err) {
-            console.error('Error connecting:', err);
-            return reject(err);
-          }
-          console.log('Connected as id ' + connection.threadId);
-          resolve();
-        });
-      });
-
-    const queryAsync = (query, values) =>
-      new Promise((resolve, reject) => {
-        connection.query(query, values, (error, results, fields) => {
-          if (error) return reject(error);
-          resolve(results);
-        });
-      });
-
-    const endAsync = () =>
-      new Promise((resolve, reject) => {
-        connection.end((err) => {
-          if (err) return reject(err);
-          resolve();
-        });
-      });
-
-    // Connect to the database
-    await connectAsync();
-
-    // Check if the user already exists
-    const rows = await queryAsync(
+    // Check if user already exists
+    const [rows] = await connection.execute(
       'SELECT id FROM users WHERE cognito_sub = ?',
       [sub]
     );
 
+    // Insert new user if not found
     if (!rows.length) {
-      // Insert new user record if not found
-      await queryAsync(
+      await connection.execute(
         `INSERT INTO users (cognito_sub, email, name, created_at, updated_at) 
          VALUES (?, ?, ?, NOW(), NOW())`,
         [sub, email, name]
@@ -82,18 +59,20 @@ export const handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: corsHeaders,
       body: JSON.stringify({ message: 'User synced successfully.' }),
     };
   } catch (error) {
     console.error('Error syncing user:', error);
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Error syncing user.', details: error.message }),
     };
   } finally {
     if (connection) {
       try {
-        await new Promise((resolve) => connection.end(resolve));
+        await connection.end();
       } catch (endError) {
         console.error('Error ending connection:', endError);
       }
