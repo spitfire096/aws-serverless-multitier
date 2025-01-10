@@ -1,0 +1,43 @@
+.purchases-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
+  .purchases-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .purchase-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .purchase-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .purchase-details {
+    padding: 15px;
+  }
+  
+  .purchase-details h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+  
+  .purchase-details p {
+    margin: 5px 0;
+    color: #555;
+  }
+  

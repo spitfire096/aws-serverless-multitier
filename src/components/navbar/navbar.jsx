@@ -17,28 +17,13 @@ const Navbar = () => {
 
     // Then redirect to Cognito’s logout endpoint
     const clientId = "2rk0abf54j7on6od375mc7nbkd";
-    const logoutUri = "https://main.d1ktvyh6vc45ny.amplifyapp.com/";
+    const logoutUri = import.meta.env.VITE_REDIRECT_URI;
     const cognitoDomain =
       "https://ap-southeast-2h6ot5bgmn.auth.ap-southeast-2.amazoncognito.com";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri
     )}`;
   };
-
-  switch (auth.activeNavigator) {
-    case "signinSilent":
-      return <div>Signing you in...</div>;
-    case "signoutRedirect":
-      return <div>Signing you out...</div>;
-  }
-
-  if (auth.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (auth.error) {
-    return <div>Oops... {auth.error.message}</div>;
-  }
 
   const toggleResponsiveMenu = () => {
     setIsResponsive(!isResponsive);
@@ -87,7 +72,7 @@ const Navbar = () => {
                 {isDropdownOpen && (
                   <div className="dropdown-content">
                     <Link to="/profile">Profile</Link>
-                    <Link to="/sold-items">Sold Items</Link>
+                    <Link to="/my-listings">Sold Items</Link>
                     <button onClick={handleSignOut}>Sign Out</button>
                   </div>
                 )}

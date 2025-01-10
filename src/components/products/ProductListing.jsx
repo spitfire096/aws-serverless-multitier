@@ -1,65 +1,71 @@
-// // ProductListing.jsx
-// import React, { useEffect, useState } from 'react'
-// import './ProductListing.css'
-// import ProductCard from './ProductCard'
-// import { fetchProducts, buyProduct } from '../../services/apiService'
-// import { useAuth } from 'react-oidc-context'
+// ProductListing.jsx
+import React, { useEffect, useState } from 'react'
+import './ProductListing.css'
+import ProductCard from './ProductCard'
+import { fetchProducts, buyProduct } from '../../services/apiService'
+import { useAuth } from 'react-oidc-context'
 
-// const ProductListing = () => {
-//   const [products, setProducts] = useState([])
-//   const [loading, setLoading] = useState(true)
-//   const [error, setError] = useState(null)
-//   const auth = useAuth()
+import { useNavigate } from 'react-router-dom';
 
-//   useEffect(() => {
-//     const getProducts = async () => {
-//       try {
-//         const data = await fetchProducts()
-//         setProducts(data)
-//       } catch (err) {
-//         setError(err.message || 'Error fetching products')
-//       } finally {
-//         setLoading(false)
-//       }
-//     }
+const ProductListing = () => {
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const auth = useAuth()
 
-//     getProducts()
-//   }, [])
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const data = await fetchProducts()
+        setProducts(data)
+      } catch (err) {
+        setError(err.message || 'Error fetching products')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-//   const handleBuy = async (productId) => {
-//     if (!auth.isAuthenticated) {
-//       auth.signinRedirect()
-//       return
-//     }
+    getProducts()
+  }, [])
 
-//     try {
-//       await buyProduct(productId)
-//       // Update the product's status locally
-//       setProducts((prevProducts) =>
-//         prevProducts.map((product) =>
-//           product.id === productId ? { ...product, status: 'sold' } : product
-//         )
-//       )
-//       alert('Purchase successful!')
-//     } catch (err) {
-//       alert(err.response?.data?.message || 'Error purchasing product')
-//     }
-//   }
+  const navigate = useNavigate();
 
-//   if (loading) return <div>Loading products...</div>
-//   if (error) return <div>Error: {error}</div>
+  const handleBuy = async (productId) => {
+    if (!auth.isAuthenticated) {
+      auth.signinRedirect()
+      return
+    }
 
-//   return (
-//     <div className="product-listing-container">
-//       {products.map(product => (
-//         <ProductCard 
-//           key={product.id}
-//           product={product}
-//           onBuy={handleBuy}
-//         />
-//       ))}
-//     </div>
-//   )
-// }
+    try {
+      // Pass the auth token when calling buyProduct
+      await buyProduct(productId, auth.user?.access_token)
+      // Update the product's status locally
+      setProducts((prevProducts) =>
+        prevProducts.map((product) =>
+          product.id === productId ? { ...product, status: 'sold' } : product
+        )
+      )
+      alert('Purchase successful!')
+      navigate('/purchases');
+    } catch (err) {
+      alert(err.message || 'Error purchasing product')
+    }
+  }
 
-// export default ProductListing
+  if (loading) return <div>Loading products...</div>
+  if (error) return <div>Error: {error}</div>
+
+  return (
+    <div className="product-listing-container">
+      {products.map(product => (
+        <ProductCard 
+          key={product.id}
+          product={product}
+          onBuy={handleBuy}
+        />
+      ))}
+    </div>
+  )
+}
+
+export default ProductListing
