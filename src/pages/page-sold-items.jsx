@@ -1,38 +1,44 @@
 // src/pages/page-sold-items.jsx
-import React, { useEffect, useState } from 'react'
-import { useAuth } from 'react-oidc-context'
-import { fetchProducts } from '../services/apiService'
-import './page-sold-items.css'
+import React, { useEffect, useState } from 'react';
+import { useAuth } from 'react-oidc-context';
+import { fetchUserProducts } from '../services/apiService';
+import './page-sold-items.css';
 
 const SoldItems = () => {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const auth = useAuth()
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const auth = useAuth();
 
   useEffect(() => {
     const getUserProducts = async () => {
       if (!auth.isAuthenticated) {
-        auth.signinRedirect()
-        return
+        auth.signinRedirect();
+        return;
       }
 
       try {
-        const sellerId = auth.user?.profile?.sub
-        const data = await fetchProducts(sellerId)
-        setProducts(data)
+        // Use Cognito sub as sellerSub
+        const sellerSub = auth.user?.profile?.sub;
+        if (!sellerSub) {
+          throw new Error("Seller information is missing.");
+        }
+
+        const data = await fetchUserProducts(sellerSub);
+        setProducts(data);
       } catch (err) {
-        setError(err.message || 'Error fetching your products')
+        console.error(err);
+        setError(err.message || 'Error fetching your products');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    getUserProducts()
-  }, [auth])
+    getUserProducts();
+  }, [auth]);
 
-  if (loading) return <div>Loading your products...</div>
-  if (error) return <div>Error: {error}</div>
+  if (loading) return <div>Loading your products...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="sold-items-container">
@@ -59,7 +65,7 @@ const SoldItems = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SoldItems
+export default SoldItems;

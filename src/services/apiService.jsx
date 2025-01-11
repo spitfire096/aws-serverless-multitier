@@ -71,3 +71,15 @@ export const fetchPurchases = async (token) => {
   if (!response.ok) throw new Error("Failed to fetch purchases.");
   return response.json();
 };
+
+// --------------------  USER PRODUCTS API -------------------- //
+export const fetchUserProducts = async (sellerSub) => {
+  const response = await fetch(`${BASE_URL}/products?seller_sub=${encodeURIComponent(sellerSub)}`, {
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to fetch user products.");
+  }
+  return response.json();
+};
