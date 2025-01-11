@@ -1,7 +1,13 @@
-// UpdateUserProfileFunction/index.mjs
 import mysql from 'mysql2/promise';
 
 export const handler = async (event) => {
+  // Define CORS headers to include in all responses
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
   let connection;
   try {
     const body = JSON.parse(event.body);
@@ -9,6 +15,7 @@ export const handler = async (event) => {
     if (!sub) {
       return { 
         statusCode: 400, 
+        headers: corsHeaders,
         body: JSON.stringify({ error: 'Missing sub in request body.' }) 
       };
     }
@@ -34,12 +41,14 @@ export const handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: corsHeaders,
       body: JSON.stringify({ message: 'Profile updated successfully.' }),
     };
   } catch (error) {
     console.error('Error updating profile:', error);
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Error updating profile.' }),
     };
   } finally {
