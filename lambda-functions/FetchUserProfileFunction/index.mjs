@@ -1,13 +1,20 @@
-// FetchUserProfileFunction/index.js
 import mysql from 'mysql2/promise';
 
 export const handler = async (event) => {
+  // Define CORS headers to include in all responses
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT",
+    "Access-Control-Allow-Headers": "Content-Type"
+  };
+
   let connection;
   try {
     const { sub } = event.queryStringParameters || {};
     if (!sub) {
       return { 
         statusCode: 400, 
+        headers: corsHeaders,
         body: JSON.stringify({ error: 'Missing sub parameter.' }) 
       };
     }
@@ -27,19 +34,21 @@ export const handler = async (event) => {
     if (rows.length === 0) {
       return {
         statusCode: 404,
+        headers: corsHeaders,
         body: JSON.stringify({ error: 'User not found.' }),
       };
     }
 
-    // Return the first matching user record
     return {
       statusCode: 200,
+      headers: corsHeaders,
       body: JSON.stringify(rows[0]),
     };
   } catch (error) {
     console.error('Error fetching user profile:', error);
     return {
       statusCode: 500,
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Error fetching profile.' }),
     };
   } finally {

@@ -1,4 +1,4 @@
-// src/components/Navbar/Navbar.jsx
+// src/components/navbar/navbar.jsx
 
 import React, { useState } from "react";
 import "./navbar.css";
@@ -42,7 +42,9 @@ const Navbar = () => {
     <div>
       <nav className="navbar">
         <div className="navbar-logo">
-          <a href="/"><img src={amazonLogo} alt="Company Logo" /></a>
+          <a href="/">
+            <img src={amazonLogo} alt="Company Logo" />
+          </a>
         </div>
         <div className="search-bar">
           <input type="text" placeholder="Search for products..." />
@@ -52,14 +54,16 @@ const Navbar = () => {
           <li>
             <Link to="/products">Products</Link>
           </li>
-          <li>
-            <Link to="/cart">Cart</Link>
-          </li>
+          {auth.isAuthenticated && (
+            <li>
+              <Link to="/purchases">Purchases</Link>
+            </li>
+          )}
           {auth.isAuthenticated && (
             <li>
               <Link to="/sell" className="sell-button">
                 +
-              </Link>{" "}
+              </Link>
             </li>
           )}
           <li className="user-menu">
@@ -68,7 +72,6 @@ const Navbar = () => {
                 <button className="dropbtn" onClick={toggleDropdown}>
                   Hello {auth.user?.profile?.name || "User"}!
                 </button>
-                
                 {isDropdownOpen && (
                   <div className="dropdown-content">
                     <Link to="/profile">Profile</Link>

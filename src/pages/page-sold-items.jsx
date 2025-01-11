@@ -49,7 +49,7 @@ const SoldItems = () => {
         <div className="sold-items-grid">
           {products.map(product => (
             <div key={product.id} className="sold-item-card">
-              <img src={product.imgUrl} alt={product.title} />
+              <img src={product.image_url} alt={product.title} />
               <div className="sold-item-info">
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>

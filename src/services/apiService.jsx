@@ -1,4 +1,4 @@
-// Placeholder base URL – update these once your API Gateway is deployed
+// src/services/apiService.jsx:
 const BASE_URL = "https://n0ahn6cxe9.execute-api.ap-southeast-2.amazonaws.com/prod";
 
 // --------------------  USER APIS -------------------- //
@@ -49,27 +49,12 @@ export const fetchProducts = async (params = {}) => {
   return response.json();
 };
 
-export const buyProduct = async (productId, token) => {
-  const response = await fetch(`${BASE_URL}/products/${productId}/buy`, {
-    method: 'PUT',
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
-  });
-  if (!response.ok) throw new Error("Failed to purchase product.");
-  return response.json();
+export const buyProduct = async () => {
+
 };
 
-export const fetchPurchases = async (token) => {
-  const response = await fetch(`${BASE_URL}/purchases`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (!response.ok) throw new Error("Failed to fetch purchases.");
-  return response.json();
+export const fetchPurchases = async () => {
+
 };
 
 // --------------------  USER PRODUCTS API -------------------- //
