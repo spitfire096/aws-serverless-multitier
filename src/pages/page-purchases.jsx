@@ -1,3 +1,4 @@
+// pages/PurchasesPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
 import Navbar from '../components/navbar/navbar';
@@ -18,8 +19,17 @@ const PurchasesPage = () => {
         return;
       }
 
+      // Retrieve the actual sub from the OIDC user profile
+      const userSub = auth.user?.profile?.sub;
+      if (!userSub) {
+        // If for some reason there's no sub, handle it (e.g., sign in again).
+        console.error("No 'sub' found in OIDC profile.");
+        return;
+      }
+
       try {
-        const data = await fetchPurchases(auth.user?.access_token);
+        // Pass the userSub to fetchPurchases
+        const data = await fetchPurchases(userSub);
         setPurchases(data);
       } catch (err) {
         setError(err.message || 'Error fetching purchases');
