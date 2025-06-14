@@ -12,10 +12,10 @@
   "dependencies": {
     "aws-amplify": "^6.12.0",
     "axios": "^1.7.9",
-    "oidc-client-ts": "^3.1.0",
+    "oidc-client-ts": "^3.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-oidc-context": "^3.2.0",
+    "react-oidc-context": "^3.3.0",
     "react-router": "^7.1.1",
     "react-router-dom": "^7.1.1"
   },
@@ -29,7 +29,7 @@
     "aws-cdk": "^2.174.0",
     "aws-cdk-lib": "^2.174.0",
     "constructs": "^10.4.2",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.5",
     "eslint": "^9.17.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",

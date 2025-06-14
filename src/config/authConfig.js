@@ -2,8 +2,8 @@
 import { syncUserInfo } from "../services/apiService";  // Import your new service
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_WsSH8Q4rB",
-  client_id: "1jjcmvejg1ip99bi9vq36g1oll",
+  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_4I5lqgViI/.well-known/jwks.json",
+  client_id: "us-east-1_4I5lqgViI",
   redirect_uri: import.meta.env.VITE_REDIRECT_URI,
   response_type: "code",
   scope: "email openid profile",

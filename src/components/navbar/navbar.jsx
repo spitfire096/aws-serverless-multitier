@@ -16,10 +16,10 @@ const Navbar = () => {
     await auth.removeUser();
 
     // Then redirect to Cognito’s logout endpoint
-    const clientId = "2rk0abf54j7on6od375mc7nbkd";
+    const clientId = "us-east-1_4I5lqgViI";
     const logoutUri = import.meta.env.VITE_REDIRECT_URI;
     const cognitoDomain =
-      "https://ap-southeast-2h6ot5bgmn.auth.ap-southeast-2.amazoncognito.com";
+      "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_4I5lqgViI/.well-known/jwks.json";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(
       logoutUri
     )}`;

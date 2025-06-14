@@ -1,0 +1,107 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for Chemazon Lambda functions and API Gateway
+Resources:
+  BuyProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: BuyProductFunction
+      Events:
+        BuyProductApi:
+          Type: Api
+          Properties:
+            Path: /buy-product
+            Method: post
+    Metadata:
+      SamResourceId: BuyProductFunction
+  CreateProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: CreateProductFunction
+      Events:
+        CreateProductApi:
+          Type: Api
+          Properties:
+            Path: /create-product
+            Method: post
+    Metadata:
+      SamResourceId: CreateProductFunction
+  FetchProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: FetchProductsFunction
+      Events:
+        FetchProductsApi:
+          Type: Api
+          Properties:
+            Path: /fetch-products
+            Method: get
+    Metadata:
+      SamResourceId: FetchProductsFunction
+  FetchPurchasesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: FetchPurchasesFunction
+      Events:
+        FetchPurchasesApi:
+          Type: Api
+          Properties:
+            Path: /fetch-purchases
+            Method: get
+    Metadata:
+      SamResourceId: FetchPurchasesFunction
+  FetchUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: FetchUserProfileFunction
+      Events:
+        FetchUserProfileApi:
+          Type: Api
+          Properties:
+            Path: /fetch-user-profile
+            Method: get
+    Metadata:
+      SamResourceId: FetchUserProfileFunction
+  SyncUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: SyncUserFunction
+      Events:
+        SyncUserApi:
+          Type: Api
+          Properties:
+            Path: /sync-user
+            Method: post
+    Metadata:
+      SamResourceId: SyncUserFunction
+  UpdateUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: UpdateUserProfileFunction
+      Events:
+        UpdateUserProfileApi:
+          Type: Api
+          Properties:
+            Path: /update-user-profile
+            Method: post
+    Metadata:
+      SamResourceId: UpdateUserProfileFunction
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/

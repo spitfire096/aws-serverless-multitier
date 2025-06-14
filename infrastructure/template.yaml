@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for Chemazon Lambda functions with Cognito authentication
+
+Resources:
+  # Cognito User Pool
+  ChemazonUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: chemazon-user-pool
+
+  # Cognito User Pool Client
+  ChemazonUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref ChemazonUserPool
+      ClientName: chemazon-user-pool-client
+
+  # API Gateway with Cognito Authorizer
+  ChemazonApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt ChemazonUserPool.Arn
+
+  BuyProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/BuyProduct/
+      Events:
+        BuyProductApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /buy-product
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  CreateProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/CreateProduct/
+      Events:
+        CreateProductApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /create-product
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  FetchProductsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/FetchProducts/
+      Events:
+        FetchProductsApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /fetch-products
+            Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  FetchPurchasesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/FetchPurchases/
+      Events:
+        FetchPurchasesApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /fetch-purchases
+            Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  FetchUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/FetchUserProfileFunction/
+      Events:
+        FetchUserProfileApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /fetch-user-profile
+            Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  SyncUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/SyncUserFunction/
+      Events:
+        SyncUserApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /sync-user
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+  UpdateUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: ../lambda-functions/UpdateUserProfileFunction/
+      Events:
+        UpdateUserProfileApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ChemazonApi
+            Path: /update-user-profile
+            Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ChemazonApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  UserPoolId:
+    Description: "Cognito User Pool ID"
+    Value: !Ref ChemazonUserPool
+  UserPoolClientId:
+    Description: "Cognito User Pool Client ID"
+    Value: !Ref ChemazonUserPoolClient
