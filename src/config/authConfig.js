@@ -2,11 +2,13 @@
 import { syncUserInfo } from "../services/apiService";  // Import your new service
 
 const cognitoAuthConfig = {
-  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_4I5lqgViI/.well-known/jwks.json",
-  client_id: "us-east-1_4I5lqgViI",
-  redirect_uri: import.meta.env.VITE_REDIRECT_URI,
-  response_type: "code",
-  scope: "email openid profile",
+  UserPoolId: "us-east-1_4I5lqgViI",
+  ClientId: "Y33suk9pe7clu7sjvcdilfl84ft", // Replace with your App Client ID
+  AppWebDomain: "us-east-14i5lqgvii.auth.us-east-1.amazoncognito.com", // Replace with your Cognito domain
+  RedirectUriSignIn: import.meta.env.VITE_REDIRECT_URI,
+  RedirectUriSignOut: import.meta.env.VITE_REDIRECT_URI,
+  TokenScopesArray: ["openid", "email", "profile"],
+  AdvancedSecurityDataCollectionFlag: false,
   onSigninCallback: async (_user) => {
     try {
       // Sync user info with your backend
